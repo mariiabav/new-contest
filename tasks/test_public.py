@@ -2,44 +2,48 @@ from typing import List
 
 import pytest
 
-from .task import task2
+from .task import task3
 
 
 class Case:
-    def __init__(self, name: str, n: int, dependencies: List[List[int]], keys: List[List[int]], answer: List[bool]):
+    def __init__(self, name: str, n: int, edges: List[List[int]], probabilities: List[float], start: int, end: int,
+                 answer: float):
         self._name = name
         self.n = n
-        self.dependencies = dependencies
-        self.keys = keys
+        self.edges = edges
+        self.probabilities = probabilities
+        self.start = start
+        self.end = end
         self.answer = answer
 
     def __str__(self) -> str:
-        return 'task2_test_{}'.format(self._name)
+        return 'task3_test_{}'.format(self._name)
 
 
 TEST_CASES = [
     Case(
         name='case1',
         n=3,
-        dependencies=[
+        edges=[
+            [0, 1],
             [1, 2],
-            [1, 0],
-            [2, 0]
+            [0, 2]
         ],
-        keys=[
-            [1, 0],
-            [1, 2]
-        ],
-        answer=[True, True],
+        probabilities=[0.5, 0.5, 0.2],
+        start=0,
+        end=2,
+        answer=0.25000,
     ),
 ]
 
 
 @pytest.mark.parametrize('case', TEST_CASES, ids=str)
-def test_task2(case: Case) -> None:
-    answer = task2(
+def test_task3(case: Case) -> None:
+    answer = task3(
         n=case.n,
-        dependencies=case.dependencies,
-        keys=case.keys,
+        edges=case.edges,
+        probabilities=case.probabilities,
+        start=case.start,
+        end=case.end,
     )
     assert answer == case.answer
